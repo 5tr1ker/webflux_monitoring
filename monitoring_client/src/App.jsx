@@ -75,6 +75,24 @@ function App() {
       message: '이메일 발송 서비스가 준비되었습니다. SMTP 서버 연결이 성공적으로 완료되었으며, 템플릿 엔진도 정상 작동 중입니다. 스팸 필터링과 발송 제한 기능도 활성화되어 있습니다.',
       service: 'Email Service',
       status: 'success'
+    },
+    {
+      id: 9,
+      name: 'I.log',
+      timestamp: '2024-01-18 08:07:37',
+      level: 'INFO',
+      message: '이메일 발송 서비스가 준비되었습니다. SMTP 서버 연결이 성공적으로 완료되었으며, 템플릿 엔진도 정상 작동 중입니다. 스팸 필터링과 발송 제한 기능도 활성화되어 있습니다.',
+      service: 'Email Service',
+      status: 'success'
+    },
+    {
+      id: 10,
+      name: 'J.log',
+      timestamp: '2024-01-15 22:16:48',
+      level: 'INFO',
+      message: '이메일 발송 서비스가 준비되었습니다. SMTP 서버 연결이 성공적으로 완료되었으며, 템플릿 엔진도 정상 작동 중입니다. 스팸 필터링과 발송 제한 기능도 활성화되어 있습니다.',
+      service: 'Email Service',
+      status: 'success'
     }
   ];
 

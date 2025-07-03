@@ -12,7 +12,7 @@
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1800px;
   width: 100%;
   max-height: calc(100vh - 40px);
   background: rgba(255, 255, 255, 0.95);
@@ -83,9 +83,31 @@
   border-right: 1px solid #e3f2fd;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow: hidden;
+  height: 575px;
+  overflow-y: scroll;
   flex-shrink: 0;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #74b9ff;
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #0984e3;
+}
+
+.sidebar::-webkit-scrollbar-corner {
+  background: #f1f1f1;
 }
 
 .sidebar-title {
@@ -139,7 +161,7 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  min-height: 50px;
+  height: 57px;
 }
 
 .log-item:hover {
