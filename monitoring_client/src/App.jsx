@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 
 function App() {
@@ -97,6 +97,7 @@ function App() {
   ];
 
   const [logMessage, setLogMessage] = useState("");
+  const logRef = useRef(null);
 
   const [currentLogIndex, setCurrentLogIndex] = useState(0);
   const currentLog = logData[currentLogIndex];
@@ -122,6 +123,10 @@ function App() {
       }
     }
   };
+
+  useEffect(() => {
+    logRef.current.scrollTop = logRef.current.scrollHeight;
+  }, [logMessage]);
 
   
 
@@ -168,7 +173,7 @@ function App() {
               </div>
 
               <div className="log-content">
-                <div className="log-data">
+                <div className="log-data" ref={logRef}>
                   <pre className="log-text">{logMessage}</pre>
                 </div>
               </div>

@@ -22,10 +22,12 @@ public class MonitoringConsumer {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonString = consumerRecord.value().toString();
 
-            HashMap<String, Object> data = objectMapper.readValue(jsonString, HashMap.class);
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("message" , jsonString);
 
             sseSink.tryEmitNext(objectMapper.writeValueAsString(data));
 
+            System.out.println("데이터 전송 : " + data);
             return data;
         } catch (JsonProcessingException E) {
             System.out.println("JSON 파싱 불가 : " + consumerRecord.value());
@@ -33,5 +35,4 @@ public class MonitoringConsumer {
             return null;
         }
     }
-
 }
