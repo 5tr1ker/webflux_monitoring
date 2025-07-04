@@ -2,11 +2,11 @@ package com.ideatec.monitoring.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ideatec.monitoring.config.SseConfig;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Sinks;
 
 import java.util.HashMap;
 
@@ -14,7 +14,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class MonitoringConsumer {
 
-    private final Sinks.Many<String> sseSink;
+    private final SseConfig sseConfig;
 
     @KafkaListener(topics = "test01" , groupId = "group_01")
     public HashMap<?,?> monitorConsumer(ConsumerRecord consumerRecord) {
@@ -25,8 +25,7 @@ public class MonitoringConsumer {
             HashMap<String, Object> data = new HashMap<>();
             data.put("message" , jsonString);
 
-            sseSink.tryEmitNext(objectMapper.writeValueAsString(data));
-
+            sseConfig.send(objectMapper.writeValueAsString(data));
             System.out.println("데이터 전송 : " + data);
             return data;
         } catch (JsonProcessingException E) {
