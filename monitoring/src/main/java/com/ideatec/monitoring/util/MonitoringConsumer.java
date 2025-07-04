@@ -25,7 +25,7 @@ public class MonitoringConsumer {
             HashMap<String, Object> data = new HashMap<>();
             data.put("message" , jsonString);
 
-            sseConfig.send(objectMapper.writeValueAsString(data));
+            sseConfig.send(objectMapper.writeValueAsString(data) , jsonString);
             System.out.println("데이터 전송 : " + data);
             return data;
         } catch (JsonProcessingException E) {
