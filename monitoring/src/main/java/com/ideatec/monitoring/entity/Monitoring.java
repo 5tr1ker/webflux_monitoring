@@ -19,6 +19,8 @@ public class Monitoring {
 
     private String log;
 
+    private String logType;
+
     private String createAt;
 
 }

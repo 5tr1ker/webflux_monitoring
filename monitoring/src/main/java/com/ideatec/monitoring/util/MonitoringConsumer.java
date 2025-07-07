@@ -16,8 +16,8 @@ public class MonitoringConsumer {
 
     private final SseConfig sseConfig;
 
-    @KafkaListener(topics = "test01" , groupId = "group_01")
-    public HashMap<?,?> monitorConsumer(ConsumerRecord consumerRecord) {
+    @KafkaListener(topics = "db_topic" , groupId = "group_01")
+    public HashMap<?,?> monitorConsumer_db(ConsumerRecord consumerRecord) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonString = consumerRecord.value().toString();
@@ -25,8 +25,27 @@ public class MonitoringConsumer {
             HashMap<String, Object> data = new HashMap<>();
             data.put("message" , jsonString);
 
-            sseConfig.send(objectMapper.writeValueAsString(data) , jsonString);
-            System.out.println("데이터 전송 : " + data);
+            sseConfig.send(objectMapper.writeValueAsString(data) , jsonString , "db");
+            System.out.println("db_topic 데이터 전송 : " + data);
+            return data;
+        } catch (JsonProcessingException E) {
+            System.out.println("JSON 파싱 불가 : " + consumerRecord.value());
+
+            return null;
+        }
+    }
+
+    @KafkaListener(topics = "error_topic" , groupId = "group_01")
+    public HashMap<?,?> monitorConsumer_error(ConsumerRecord consumerRecord) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = consumerRecord.value().toString();
+
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("message" , jsonString);
+
+            sseConfig.send(objectMapper.writeValueAsString(data) , jsonString , "error");
+            System.out.println("error_topic 데이터 전송 : " + data);
             return data;
         } catch (JsonProcessingException E) {
             System.out.println("JSON 파싱 불가 : " + consumerRecord.value());
