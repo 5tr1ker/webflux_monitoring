@@ -1,5 +1,7 @@
 package com.ideatec.monitoring.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideatec.monitoring.entity.Monitoring;
 import com.ideatec.monitoring.repository.MonitoringRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,6 +34,8 @@ public class SseConfig {
             return;
         }
 
+        sendPrevMessage(sink, type);
+
         System.out.printf("새 SSE 연결 추가됨. 현재 연결 수 : [ DB : %d  , ERROR : %d ]\n" , sinks_db.size() , sinks_error.size());
         sink.onDispose(() -> {
             if(type.equals("db")) {
@@ -41,6 +46,25 @@ public class SseConfig {
             }
             System.out.printf("SSE 연결 해제됨. 현재 연결 수 : [ DB : %d  , ERROR : %d ]\n" , sinks_db.size() , sinks_error.size());
         });
+    }
+
+    private void sendPrevMessage(FluxSink<String> sink, String type) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        HashMap<String, Object> data = new HashMap<>();
+        List<Monitoring> monitoring = monitoringRepository.findTop30ByLogTypeOrderByCreateAtDesc(type);
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = monitoring.size() - 1; i > -1; i--) {
+            sb.append(monitoring.get(i).getLog()).append("\n");
+        }
+        data.put("message" , sb);
+
+        try {
+            sink.next(objectMapper.writeValueAsString(data) + "\n\n");
+        }
+        catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        };
     }
 
     public void send(String message, String originMessage, String type) {

@@ -1,6 +1,7 @@
 package com.ideatec.monitoring.controller;
 
 import com.ideatec.monitoring.config.SseConfig;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
